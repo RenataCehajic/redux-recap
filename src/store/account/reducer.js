@@ -1,4 +1,4 @@
-// src/store/balance/reducer.js
+// src/store/account/reducer.js
 const initialState = {
   amount: 0,
 };

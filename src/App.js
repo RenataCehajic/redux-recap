@@ -1,61 +1,40 @@
 import { useDispatch, useSelector } from "react-redux";
-import { deposit, withdraw, reset } from "./store/account/actions";
+import AddTeacherForm from "./components/AddTeacherForm";
+import { deposit } from "./store/account/actions";
 import { selectAccountValue } from "./store/account/selectors";
-import { useState } from "react";
+import { selectAllTeachers } from "./store/teacher/selectors";
 
 function App() {
   const dispatch = useDispatch();
 
   const balance = useSelector(selectAccountValue);
-  const [customAmount, setCustomAmount] = useState(0);
+  console.log("Render in app.js", balance);
 
-  // const [balance, setBalance] = useState(0);
+  const teachers = useSelector(selectAllTeachers);
 
   return (
     <div className="App">
       <p>Balance: {balance}$</p>
       <button
         onClick={() => {
-          // setBalance(balance + 10);
-          dispatch(deposit(10));
+          // dispatch(deposit(10));
+
+          const action = deposit(10);
+          console.log("action in App.js", action);
+          dispatch(action);
         }}
       >
         Deposit 10$
       </button>
-      <button
-        onClick={() => {
-          // setBalance(balance + 10);
-          dispatch(withdraw(10));
-        }}
-      >
-        Withdraw 10$
-      </button>
-      <button
-        onClick={() => {
-          // setBalance(balance + 10);
-          dispatch(reset());
-        }}
-      >
-        Reset
-      </button>
-      <br />
-      <br />
-      <input
-        type="number"
-        value={customAmount}
-        onChange={(e) => {
-          setCustomAmount(parseInt(e.target.value));
-        }}
-      />
-      <button
-        onClick={() => {
-          // setBalance(balance + 10);
-          dispatch(deposit(customAmount));
-          setCustomAmount(0);
-        }}
-      >
-        Deposit custom amount
-      </button>
+      <h3>Teachers:</h3>
+      <ul>
+        {teachers.map((teacher) => (
+          <li key={teacher.email}>
+            <a href={`mailto:${teacher.email}`}>{teacher.name}</a>
+          </li>
+        ))}
+      </ul>
+      <AddTeacherForm />
     </div>
   );
 }
